@@ -24,11 +24,20 @@ public class TestLambda implements RequestHandler<InputObject, OutputObject> {
     // @Inject
     // S3Client s3Client;
 
+    // @Inject
+    // MyRouteBuilder myRouteBuilder;    
+    
     @Inject
     ProducerTemplate pt;
 
+
+
     // @Inject
     // CamelContext ctx;
+
+    // @Inject
+    // ProcessingService processingService;
+
 
     @Override
     public OutputObject handleRequest(InputObject input, Context context) {
@@ -37,19 +46,20 @@ public class TestLambda implements RequestHandler<InputObject, OutputObject> {
         // .withRegion("eu-west-2")
         // .build();
 
-        // final CamelContext camelContext = new DefaultCamelContext();
-        // ctx.getRegistry().bind("amazonS3Client", s3Client);
+        // final CamelContext ctx = new DefaultCamelContext();
+        // ctx.getRegistry().bind("processingService", processingService);
         // try {
-		// 	camelContext.addRoutes(myRouteBuilder);
+		// 	ctx.addRoutes(myRouteBuilder);
 		// } catch (Exception e) {
 		// 	// TODO Auto-generated catch block
 		// 	e.printStackTrace();
         // }       
-        // camelContext.start();
-        // ProducerTemplate pt = camelContext.createProducerTemplate();
+        // ctx.start();
+        // ProducerTemplate pt = ctx.createProducerTemplate();
         // pt.start();
+        // ctx.start();
         OutputObject outputObjectOut = (OutputObject) pt.requestBody("direct:thing", input);
-        // camelContext.shutdown();
+        // ctx.shutdown();
         outputObjectOut.setRequestId(context.getAwsRequestId());
 
         return outputObjectOut;
