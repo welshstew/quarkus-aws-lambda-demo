@@ -16,7 +16,6 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 
 @ApplicationScoped
-@RegisterForReflection
 public class MyRouteBuilder extends RouteBuilder {
     
     // @Inject
@@ -29,11 +28,11 @@ public class MyRouteBuilder extends RouteBuilder {
     @Override
 	public void configure() throws Exception {
 
-        final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-        .withRegion("eu-west-2")
-        .build();
+        // final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+        // .withRegion("eu-west-2")
+        // .build();
 
-        this.getContext().getRegistry().bind("amazonS3Client", s3Client);
+        // this.getContext().getRegistry().bind("amazonS3Client", s3Client);
 
 
         from("direct:awsthing")

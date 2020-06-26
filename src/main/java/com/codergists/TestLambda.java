@@ -15,6 +15,10 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.impl.DefaultCamelContext;
 
+import software.amazon.awssdk.services.s3.S3Client;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import javax.enterprise.context.ApplicationScoped;
 
 
@@ -24,8 +28,8 @@ public class TestLambda implements RequestHandler<InputObject, OutputObject> {
     // @Inject
     // S3Client s3Client;
 
-    // @Inject
-    // MyRouteBuilder myRouteBuilder;    
+    @Inject
+    MyRouteBuilder myRouteBuilder;    
     
     @Inject
     ProducerTemplate pt;
@@ -35,31 +39,33 @@ public class TestLambda implements RequestHandler<InputObject, OutputObject> {
     // @Inject
     // CamelContext ctx;
 
-    // @Inject
-    // ProcessingService processingService;
+    @Inject
+    ProcessingService processingService;
 
 
     @Override
     public OutputObject handleRequest(InputObject input, Context context) {
 
-        // final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-        // .withRegion("eu-west-2")
-        // .build();
+        final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+        .withRegion("eu-west-2")
+        .build();
 
-        // final CamelContext ctx = new DefaultCamelContext();
-        // ctx.getRegistry().bind("processingService", processingService);
-        // try {
-		// 	ctx.addRoutes(myRouteBuilder);
-		// } catch (Exception e) {
-		// 	// TODO Auto-generated catch block
-		// 	e.printStackTrace();
-        // }       
-        // ctx.start();
-        // ProducerTemplate pt = ctx.createProducerTemplate();
-        // pt.start();
-        // ctx.start();
+        final CamelContext ctx = new DefaultCamelContext();
+        ctx.getRegistry().bind("processingService", processingService);
+        ctx.getRegistry().bind("s3", s3Client);
+
+        try {
+			ctx.addRoutes(myRouteBuilder);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }       
+        ctx.start();
+        pt = ctx.createProducerTemplate();
+        pt.start();
+
         OutputObject outputObjectOut = (OutputObject) pt.requestBody("direct:thing", input);
-        // ctx.shutdown();
+        ctx.shutdown();
         outputObjectOut.setRequestId(context.getAwsRequestId());
 
         return outputObjectOut;
