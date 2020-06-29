@@ -1,17 +1,9 @@
 package com.codergists;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import software.amazon.awssdk.services.s3.S3Client;
-import org.apache.camel.impl.DefaultCamelContext;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 
