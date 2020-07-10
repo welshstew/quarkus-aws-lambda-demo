@@ -77,6 +77,11 @@
         <plugins>
             <plugin>
                 <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-bootstrap-maven-plugin</artifactId>
+                <version>1.6.0.Final</version>
+            </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
                 <version>${quarkus.version}</version>
                 <executions>
